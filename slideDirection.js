@@ -25,11 +25,11 @@ function slideDirection(cfg) {
 
         function _move(e){
             e.preventDefault();
-          	e.stopPropargation();
+          	e.stopPropagation();
             e = e.touches[0];
             var deltaX = e.pageX - point.x,
                 deltaY = e.pageY - point.y,
-                degree = (Math.atan(Math.abs(deltaY / deltaX)) * 360) / (Math.PI * 2);
+                degree = (Math.atan(Math.abs(deltaY / deltaX)) * 180) / Math.PI;
             callback(degree < crossover ? "h" : "v");
             //每次完整的滑动流程中，保证move只执行一次。
             dom.removeEventListener("touchmove", _move, true);
