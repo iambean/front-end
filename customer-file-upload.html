@@ -37,6 +37,18 @@
     </body>
 </html>
 <script>
+/**
+ * title:
+ * 自定义的file-upload，兼容IE新老版本。
+ * desc:
+ * 之所以不用dom代理（在供UI显示的元素[即代理的dom]上绑定click事件，点击此dom时，执行隐藏的file:input的click()方法从而弹出选择文件框框）
+ * 原因是在高版本IE（ie8+）上，由于安全限制，代理的方法行不通，MS要求，必须是点击到目标input:file，才给弹出文件选择框。低版本和其他非ie内核无此问题。
+ * reference:
+ * http://www.iteye.com/topic/1129224
+ * http://www.gregpike.net/2012/11/javascript/twitter-bootstrap-file-input/
+ * http://gregpike.net/demos/bootstrap-file-input/demo.html
+ * http://gregpike.net/demos/bootstrap-file-input/bootstrap.file-input.js
+ */
 	var wrapper = document.getElementById("wrapper"),
 		form = document.getElementById("myform");
 	
