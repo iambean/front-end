@@ -4,12 +4,12 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>New Web Project</title>
-		<!--<script src="http://code.jquery.com/jquery-latest.js"></script>-->
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
 		<style>
 			.wrapper{
 				position: relative;
-				width: 5em;
-				padding: 0.5em 1.5em;
+				width: 120px;
+				padding: 10px 20px;
 				overflow: hidden;
 				border: 1px solid #666;
 				background-color: #EEE;
@@ -17,9 +17,11 @@
 			.form{
 				position:absolute;
 				opacity:0;
-				filter:(opacity=0);
+				filter:alpha(opacity=0);
+				/*background-color:green;*/
 			}
 			.file{
+				/*background-color:red;*/
 				cursor:pointer;
 			}
 		</style>
@@ -37,18 +39,6 @@
     </body>
 </html>
 <script>
-/**
- * title:
- * 自定义的file-upload，兼容IE新老版本。
- * desc:
- * 之所以不用dom代理（在供UI显示的元素[即代理的dom]上绑定click事件，点击此dom时，执行隐藏的file:input的click()方法从而弹出选择文件框框）
- * 原因是在高版本IE（ie8+）上，由于安全限制，代理的方法行不通，MS要求，必须是点击到目标input:file，才给弹出文件选择框。低版本和其他非ie内核无此问题。
- * reference:
- * http://www.iteye.com/topic/1129224
- * http://www.gregpike.net/2012/11/javascript/twitter-bootstrap-file-input/
- * http://gregpike.net/demos/bootstrap-file-input/demo.html
- * http://gregpike.net/demos/bootstrap-file-input/bootstrap.file-input.js
- */
 	var wrapper = document.getElementById("wrapper"),
 		form = document.getElementById("myform");
 	
@@ -64,13 +54,25 @@
 		},
 		formSty = form.style;
 		
+	//IE下需要拿到页面滚动距离
+	var isIE = !window.addEventListener;
+	if(isIE){
+		var scrl = { l : 0, t : 0 };
+		window.onscroll = function(){
+			scrl = {
+				l : document.documentElement.scrollLeft,
+				t : document.documentElement.scrollTop
+			};
+		};
+	}
+
 	wrapper.onmousemove = function (e){		
 		if(e){
 			formSty.top = e.pageY - wpPos.t - 10 + "px";
 			formSty.left = e.pageX - wpPos.l - fmArea.w + 20 + "px";
 		}else{
-			formSty.top  = event.clientY + window.scrollTop  - wpPos.t - 10 + "px";
-			formSty.left = event.clientX + window.scrollLeft - wpPos.l - fmArea.w + 20 + "px";
+			formSty.top  = event.clientY + scrl.t  - wpPos.t - 10 + "px";
+			formSty.left = event.clientX + scrl.l - wpPos.l - fmArea.w + 20 + "px";
 		}
 	}
 	
