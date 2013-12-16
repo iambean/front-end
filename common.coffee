@@ -27,7 +27,7 @@ window.JSON ||=
 		otherType2String(json)
 
 #cookie functions:
-@$cookie =
+$cookie =
 	get : (name)->
 		return null unless name and @has(name)
 		reg = new RegExp("(?:^|.*;\\s*)" + encodeURIComponent(name).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*")
@@ -40,7 +40,7 @@ window.JSON ||=
 		reg.test(document.cookie)
 
 #创建一个命名空间，并执行初始化函数。 e.g:$.ns("a.b.c", function(){console.log(window.a.b.c===this);});//loged "true".
-@$ns = (str, fn)->
+$ns = (str, fn)->
 	#必须是形如 "aa.b.ccc"这种形式
 	return false unless /^\w+(\.\w+)*$/.test(str)
 	_parent = window
@@ -52,7 +52,7 @@ window.JSON ||=
 	fn.call _parent if fn
 
 #title:时间格式化
-@$dateFormat = (date, fmt)->
+$dateFormat = (date, fmt)->
 	_re_date_format = /(Y{2,4})|(M{1,2})|(D{1,2})|(h{1,2})|(m{1,2})|(s{1,2})/g
 	fmt.replace _re_date_format, (self, Y, M, D, h, m, s)->
 		switch true
@@ -65,7 +65,7 @@ window.JSON ||=
 			else ""
 
 #jq模板
-@$compiler = (str, data)->
+$compiler = (str, data)->
 	compiler = arguments.callee
 	#如果参数str全部为组词字符
 #	console.log /^\w*$/.test(str), "xxx"
@@ -83,7 +83,7 @@ window.JSON ||=
 	if data then fn(data) else fn
 
 #获取浏览器版本号
-@$isBrowser = (str)->
+$isBrowser = (str)->
 	str = str.toLowerCase()
 	b = navigator.userAgent.toLowerCase()
 	arrB =
@@ -102,7 +102,7 @@ window.JSON ||=
 
 _temp_a_link = document.createElement("a")
 #取出search参数，反序列化成对象
-@$getSearchs = (url)->
+$getSearchs = (url)->
 	if url
 		_temp_a_link.href = url
 		search = _temp_a_link.search
@@ -110,10 +110,10 @@ _temp_a_link = document.createElement("a")
 		search = location.search
 	$unseralize(search.replace(/^\?/, ""))
 
-@$getSearch = (key)->@$getSearchs()[key]
+$getSearch = (key)->@$getSearchs()[key]
 
 #取出hash参数，反序列化成对象.
-@$getHashs = (url)->
+$getHashs = (url)->
 	if url
 		_temp_a_link.href = url
 		hash = _temp_a_link.hash
@@ -121,15 +121,15 @@ _temp_a_link = document.createElement("a")
 		hash = location.hash
 	$unseralize(hash.replace(/^#/, ""))
 
-@$getHash = (key)->@$getHashs()[key]
+$getHash = (key)->@$getHashs()[key]
 
 #对象序列化
-@$seralize = (obj)->
+$seralize = (obj)->
 	res = for k,v of obj then k+"="+v
 	res.join("&")
 
 #字符串反序列化
-@$unseralize = (str)->
+$unseralize = (str)->
 	res = {}
 	return res unless str
 	for item in str.split("&")
@@ -138,4 +138,4 @@ _temp_a_link = document.createElement("a")
 	res
 
 #通用的获取当前时刻的毫秒数，兼容不支持Date.now()的旧浏览器
-@$getTimer = ()-> if Date.now then Date.now() else (new Date()).getTime()
+$getTimer = ()-> if Date.now then Date.now() else (new Date()).getTime()
