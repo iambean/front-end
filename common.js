@@ -1,4 +1,3 @@
-
 /**
  * @desc : 一些常用的功能函数。
  */
@@ -115,7 +114,7 @@ this.$dateFormat = function(date, fmt){
 			case !!h : return ("0" + date.getHours()).substr -h.length;
 			case !!m : return ("0" + date.getMinutes()).substr -m.length;
 			case !!s : return ("0" + date.getSeconds()).substr -s.length;
-			default : return ;
+			default : return "";
 		}
 	});
 }
