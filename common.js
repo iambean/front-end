@@ -8,16 +8,16 @@
 
 var __empty_fn = function() {};
 
-if(!window.console){
-	window.console = {};
+if(!this.console){
+	this.console = {};
 	console.log = console.warn = console.warn = __empty_fn;
 }
 
 //JSON
 //e.g: JSON.parse(JSON.stringify({b:"BBB", c:true, d:78, e:{e1:"AA", e2:45, e3:{"Xa":45, "Xb":[]}}, f : [23, true, 487, "daa", [1,2,4]]}))
-!window.JSON && (window.JSON = {
+!this.JSON && (this.JSON = {
 	"parse" : function(str){ 
-		return eval( "(" + str + ")");
+		return (1,eval)( "(" + str + ")");
 	},
 	"stringify" : function(json){
 		if(typeof json !== "object"){
