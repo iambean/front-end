@@ -67,7 +67,7 @@
 	}
 
 	wrapper.onmousemove = function (e){		
-		if(e){
+		if(e && e.pageY){
 			formSty.top = e.pageY - wpPos.t - 10 + "px";
 			formSty.left = e.pageX - wpPos.l - fmArea.w + 20 + "px";
 		}else{
