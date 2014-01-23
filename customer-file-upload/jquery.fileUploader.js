@@ -35,6 +35,7 @@
 				clonedBtn = btn.clone(true);
 			wrapper.append(clonedBtn).append(form);
 			btn.replaceWith(wrapper);
+			btn = clonedBtn;
 
 			//诸如target, action,method等属性的自定义
 			if(options.formAttrs){
@@ -45,10 +46,15 @@
 				file.attr(options.fileAttrs);
 			}
 
-			var offset = clonedBtn.offset(),
-				btnWidth = clonedBtn.get(0).offsetWidth;
+			var offset = btn.offset(),
+				btnEl = btn.get(0),
+				btnWidth = btnEl.offsetWidth,
+				btnHeight = btnEl.offsetHeight;
 			//console.log("btnWidth", btnWidth);
-			wrapper.width(btnWidth);
+			wrapper.css({
+				"width" : btnWidth,
+				"height": btnHeight
+			});
 
 			//计算鼠标指针相对btn的坐标。保证将input:file的“浏览。。。”部分对准鼠标指针 :-)
 			var relPos = {top : 0, left : 0}, _ = false;
@@ -85,9 +91,15 @@
 				});
 			});
 
+			//
+			if(typeof options.onload === "function"){
+				options.onload.apply(btn, [wrapper, form, file, options]);
+			}
+
+			//after select a file
 			if(typeof options.onselect === "function"){
 				file.change(function(){
-					options.onselect.apply(btn, form, file, options);
+					options.onselect.apply(btn, [wrapper, form, file, options]);
 				});
 			}
 		});
