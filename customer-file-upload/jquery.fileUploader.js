@@ -1,5 +1,7 @@
 /**
  * 自定义UI的文件上传按钮
+ * 设计成form>input:file的结构形式是因为ie下input:file只读不可写，
+ *  因此如果连续两次选中同一个文件的话则没办法触发change event.因此只好利用form的reset()来清空原有值
  * e.g :
     $(".wrapper").fileInput({
 		formAttrs : {
@@ -10,14 +12,17 @@
 		fileAttrs : {
 			accept : "image/*"
 		},
-		onselect : function(form){
+		onload : function(wrapper){
+			wrapper.css("background-color", "blue");
+            console.log("all are ready.");
+		}
+		onselect : function(wrapper, form){
 			form.submit();
-			form.reset();
 		}
 	});
  */
-(function(){
-	jQuery.fn.fileUploader = function(options){
+(function($){
+	$.fn.fileUploader = function(options){
 		!options && (options = {});
 		$.each(this, function(){
 			var btn = $(this);
@@ -25,7 +30,7 @@
 			// 调试需要，将filer的背景色和透明度改了，运行时改过来。
 			var formStyle = 'position:absolute;z-index:1000; \
 							top:0; right:0;margin:0;padding:0;height:100%;width:100%; \
-							opacity:.2; filter:alpha(opacity=80);background:red;';
+							opacity:0; filter:alpha(opacity=0);background:red;';
 			var form = $('<form enctype="multipart/form-data" style="'+ formStyle +'" target="_self" ></form>');
 			var file = $('<input type="file" style="padding:0;margin:0;width:100%;height:100%;cursor:pointer;" />');
 			form.append(file);
@@ -46,8 +51,7 @@
 				file.attr(options.fileAttrs);
 			}
 
-			var offset = btn.offset(),
-				btnEl = btn.get(0),
+			var btnEl = btn.get(0),
 				btnWidth = btnEl.offsetWidth,
 				btnHeight = btnEl.offsetHeight;
 			//console.log("btnWidth", btnWidth);
@@ -57,7 +61,11 @@
 			});
 
 			//计算鼠标指针相对btn的坐标。保证将input:file的“浏览。。。”部分对准鼠标指针 :-)
-			var relPos = {top : 0, left : 0}, _ = false;
+			var offset, relPos = {top : 0, left : 0}, _ = false;
+			//每次初始时重新计算偏移位置
+			wrapper.mouseover(function(){
+				offset = btn.offset();
+			});
 			wrapper.mousemove(function(event){
 				//如果支持pageXY，则无需计算已滚动的距离，否则还得实时的去计算滚动距离加上event.clientXY.
 				// [注意:最新IE已开始支持pageXY，因此用特征来hack]
@@ -83,7 +91,6 @@
 					relPos.top = event.clientY + scroll.top - offset.top;
 					relPos.left = event.clientX + scroll.left - offset.left;
 				}
-				console.log(relPos.left , btnWidth);
 				//综合各种浏览器的UI表现，在右20px上10px坐标处 都能定位到input:file的按钮区域。
 				form.css({
 					top : relPos.top - 10,
@@ -100,9 +107,9 @@
 			if(typeof options.onselect === "function"){
 				file.change(function(){
 					options.onselect.apply(btn, [wrapper, form, file, options]);
+					form.get(0).reset();
 				});
 			}
 		});
-		
 	};
-})();
+})(jQuery);
