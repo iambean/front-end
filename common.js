@@ -61,7 +61,7 @@ this.$select = function(arr, fn){
 		}
 	}
 	return null;
-}
+};
 
 //cookie functions:
 this.$cookie = {
@@ -101,7 +101,7 @@ this.$ns = function(str, fn){
 	if(fn){
 		fn.call(_parent);
 	}
-}
+};
 
 //title:时间格式化
 this.$dateFormat = function(date, fmt){
@@ -117,7 +117,7 @@ this.$dateFormat = function(date, fmt){
 			default : return "";
 		}
 	});
-}
+};
 	
 //在$dateFormat基础上的进一步产品化的封装，显示与客户端的相对时间，如“刚刚”，“一小时前”，“一天前”等
 this.$renderTimer = function(timeObj){
@@ -164,14 +164,14 @@ this.$isBrowser = function(str){
 		'opera' : b.indexOf("opera") > -1,
 		'safari' : b.indexOf("safari") > -1,
 		'chrome' : b.indexOf("chrome") > -1
-	}
+	};
 	arrB['gecko'] = !arrB['opera'] && !arrB['safari'] && b.indexOf("gecko")>-1;
-	arrB['ie'] = !arrB['opera'] && b.indexOf("msie") > -1
-	arrB['ie6'] = !arrB['opera'] && b.indexOf("msie 6") > -1
-	arrB['ie7'] = !arrB['opera'] && b.indexOf("msie 7") > -1
-	arrB['ie8'] = !arrB['opera'] && b.indexOf("msie 8") > -1
-	arrB['ie9'] = !arrB['opera'] && b.indexOf("msie 9") > -1
-	arrB['ie10'] = !arrB['opera'] && b.indexOf("msie 10") > -1
+	arrB['ie'] = !arrB['opera'] && b.indexOf("msie") > -1;
+	arrB['ie6'] = !arrB['opera'] && b.indexOf("msie 6") > -1;
+	arrB['ie7'] = !arrB['opera'] && b.indexOf("msie 7") > -1;
+	arrB['ie8'] = !arrB['opera'] && b.indexOf("msie 8") > -1;
+	arrB['ie9'] = !arrB['opera'] && b.indexOf("msie 9") > -1;
+	arrB['ie10'] = !arrB['opera'] && b.indexOf("msie 10") > -1;
 	return arrB[str];
 };
 	
@@ -186,7 +186,7 @@ this.$getSearchs = function(url){
 		search = location.search;
 	}
 	return this.$unseralize(search.replace(/^\?/, ""));
-}
+};
 
 this.$getSearch = function(key){ return this.$getSearchs()[key]; };
 
@@ -200,7 +200,7 @@ this.$getHashs = function(url){
 		hash = location.hash;
 	}
 	return this.$unseralize(hash.replace(/^#/, ""));
-}
+};
 
 this.$getHash = function(key){ return this.$getHashs()[key]; };
 
@@ -214,7 +214,7 @@ this.$seralize = function(obj){
 		res.push(k+"="+obj[k]);
 	}
 	return res.join("&");
-}
+};
 
 //字符串反序列化
 this.$unseralize = function(str){
@@ -229,7 +229,7 @@ this.$unseralize = function(str){
 		res[o[0]] = decodeURIComponent(o[1]);
 	}
 	return res;
-}
+};
 	
 //encodeHTML
 var __temp_dom = document.createElement("span");
@@ -244,12 +244,12 @@ this.$encodeHTML = function(txt){
 this.$decodeHTML = function(html){
 	__temp_dom.innerHTML = html;
 	return __temp_dom.innerText || __temp_dom.textContent;
-}
+};
 
 //通用的获取当前时刻的毫秒数，兼容不支持Date.now()的旧浏览器
 this.$getTimer = function(){
 	return Date.now ? Date.now() : (new Date()).getTime();
-}
+};
 
 /*-----------wrapper end------------*/
 
