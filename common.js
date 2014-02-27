@@ -1,5 +1,6 @@
 /**
  * @desc : 一些常用的功能函数。
+ * @author:Bean(mbn.bean@gmail.com)
  */
 
 (function(){
