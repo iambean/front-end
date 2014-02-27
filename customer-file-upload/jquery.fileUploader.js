@@ -1,7 +1,8 @@
 /**
- * 自定义UI的文件上传按钮
- * 设计成form>input:file的结构形式是因为ie下input:file只读不可写，
+ * @title:自定义UI的文件上传按钮
+ * @desc:设计成form>input:file的结构形式是因为ie下input:file只读不可写，
  *  因此如果连续两次选中同一个文件的话则没办法触发change event.因此只好利用form的reset()来清空原有值
+ * @author:Bean(mbn.bean@gmail.com)
  * e.g :
     $(".wrapper").fileInput({
 		formAttrs : {
