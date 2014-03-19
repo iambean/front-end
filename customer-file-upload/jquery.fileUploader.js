@@ -30,8 +30,8 @@
 			//
 			// 调试需要，将filer的背景色和透明度改了，运行时改过来。
 			var formStyle = 'position:absolute;z-index:1000; \
-							top:0; right:0;margin:0;padding:0;height:100%;width:100%; \
-							opacity:0; filter:alpha(opacity=0);background:red;';
+							top:0; right:0; margin:0; padding:0; height:100%; width:100%; \
+							filter:alpha(opacity=0); opacity:0;';
 			var form = $('<form enctype="multipart/form-data" style="'+ formStyle +'" target="_self" ></form>');
 			var file = $('<input type="file" style="padding:0;margin:0;width:100%;height:100%;cursor:pointer;" />');
 			form.append(file);
