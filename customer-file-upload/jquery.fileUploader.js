@@ -106,8 +106,8 @@
 
 			//after select a file
 			if(typeof options.onselect === "function"){
-				file.change(function(){
-					options.onselect.apply(btn, [wrapper, form, file, options]);
+				file.change(function(e){
+					options.onselect.apply(btn, [file.get(0), options, wrapper, form]);
 					form.get(0).reset();
 				});
 			}
