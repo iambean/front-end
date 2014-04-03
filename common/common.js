@@ -16,42 +16,42 @@ if(!this.console){
 
 //JSON
 //e.g: JSON.parse(JSON.stringify({b:"BBB", c:true, d:78, e:{e1:"AA", e2:45, e3:{"Xa":45, "Xb":[]}}, f : [23, true, 487, "daa", [1,2,4]]}))
-!this.JSON && (this.JSON = {
-	"parse" : function(str){ 
-		return (1,eval)( "(" + str + ")");
-	},
-	"stringify" : function(json){
-		if(typeof json !== "object"){
-			throw new Error("JSON.stringify的参数必须是JSON格式");
-		}
-		
-		otherType2String(json);
-		
-		function otherType2String(data){
-			switch(data.constructor){
-				case String : return("\"" + data + "\"");
-				case Number : return data;
-				case Boolean: return data;
-				case Array  : 
-					var arr = [];
-					for(var i=0, l=data.length;i<l;i++){
-						all.push(otherType2String(item));
-					}
-					return "[" + all.join(",") + "]";
-				case Object  : //k-v json object:
-					var all = [];
-					for(key in data){
+!this.JSON && (this.JSON = function(){
+	var otherType2String = function (data){
+		switch(data.constructor){
+			case String : return("\"" + data + "\"");
+			case Number : return data;
+			case Boolean: return data;
+			case Function: return "";//原生的stringify方法对Function却是直接忽略掉的。
+			case Array  :
+				var all = [];
+				for(var i=0, l=data.length;i<l;i++){
+					all.push(otherType2String(data[i]));
+				}
+				return "[" + all.join(",") + "]";
+			default: //k-v json object and other objects
+				var all = [];
+				for(var key in data){
+					if(data.hasOwnProperty(key)){
 						var value = data[key];
 						all.push("\"" + key + "\":" + otherType2String(value));
 					}
-					return "{" + all.join(",") + "}";
-				default :
-					//其他类型全部tostring，但是原生的stringify方法对Function却是直接忽略掉的。
-					return data.toString();
-			}
+				}
+				return "{" + all.join(",") + "}";
 		}
-	}
-});
+	};
+	return {
+		"parse" : function(str){
+			return (1,eval)( "(" + str + ")");
+		},
+		"stringify" : function(json){
+			if(typeof json !== "object"){
+				window.console && console.warn && console.warn("JSON.stringify的参数必须是JSON格式");
+			}
+			return otherType2String(json);
+		}
+	};
+}());
 
 //找到数组中满足条件的第一项，找到就立即返回，不会继续往后找，这是跟jQuery.grep不同的地方。
 this.$select = function(arr, fn){
