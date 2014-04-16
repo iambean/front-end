@@ -65,7 +65,7 @@ this.$select = function(arr, fn){
 };
 
 //cookie functions:
-this.$cookie = {
+this.$COOKIE = {
 	get : function(name){
 		if(!name || !this.has(name)){
 			return null;
@@ -135,26 +135,7 @@ this.$renderTimer = function(timeObj){
 						][idx];
 };
 	
-//jq模板
-this.$compiler = function(str, data){
-	var compiler = arguments.callee;
-	//如果参数str全部为组词字符
-	//console.log /^\w*$/.test(str), "xxx"
-	var fn;
-	if(/^\w*$/.test(str)){
-		fn = !compiler[str] && (compiler[str] = compiler(document.getElementById(str).innerHTML));
-	}else{
-		fn = new Function("obj", "var p=[];with(obj){p.push('" +
-					str.replace(/[\r\t\n]/g, " ")
-					.split("<#").join("\t")
-					.replace(/((^|#>)[^\t]*)'/g, "$1\r")
-					.replace(/\t=(.*?)#>/g, "',$1,'")
-					.split("\t").join("');")
-					.split("#>").join("p.push('")
-					.split("\r").join("\\'")+ "');}return p.join('');");
-	}
-	return data ? fn(data) : fn;
-};
+
 
 //获取浏览器版本号
 this.$isBrowser = function(str){
@@ -176,76 +157,103 @@ this.$isBrowser = function(str){
 	return arrB[str];
 };
 	
-var _temp_a_link = document.createElement("a")
-//取出search参数，反序列化成对象
-this.$getSearchs = function(url){
-	var search;
-	if(url){
-		_temp_a_link.href = url;
-		search = _temp_a_link.search;
-	}else{
-		search = location.search;
-	}
-	return this.$unseralize(search.replace(/^\?/, ""));
-};
+/**
+ * HTML相关的操作功能集
+ */
+this.$HTML = function(){
+	//创建一个临时dom，后面用到
+	var __temp_dom = document.createElement("span");
+	return {
+		/**
+		 * 将html代码转义成实体字符
+		 */
+		encode : function(txt){
+			var t = document.createTextNode(txt),
+				res = __temp_dom.appendChild(t).parentNode.innerHTML;
+			__temp_dom.innerHTML = "";
+			return res;
+		},
+		/**
+		 * 将html实体字符还原成html格式代码
+		 */
+		decode : function(html){
+			__temp_dom.innerHTML = html;
+			return __temp_dom.innerText || __temp_dom.textContent;
+		},
+		/**
+		 * 利用浏览器构造dom的特性修复错乱的HTML。
+		 */
+		fix : function(html){
+			__temp_dom.innerHTML = html;
+			return __temp_dom.innerHTML;
+		},
+		/**
+		 * html模板引擎
+		 */
+		compile : function(str, data){
+			var compile = arguments.callee;
+			//如果参数str全部为组词字符，则表示传入的是DOM id.
+			var fn;
+			if(/^\w*$/.test(str)){
+				if(!compile[str]){
+					compile[str] = compile($id(str).innerHTML);
+				}
+				fn = compile[str];
+			}else{
+				fn = new Function("obj", "var p=[];with(obj){p.push('" +
+					str.replace(/[\r\t\n]/g, " ")
+						.split("{#").join("\t")
+						.replace(/((^|#\})[^\t]*)'/g, "$1\r")
+						.replace(/\t=(.*?)#\}/g, "',$1,'")
 
-this.$getSearch = function(key){ return this.$getSearchs()[key]; };
+						.split("\t").join("');")
+						.split("#}").join("p.push('")
+						.split("\r").join("\\'")+ "');}return p.join('');");
+			}
+			return data ? fn(data) : fn;
+		}
+	};
+}();
 
-//取出hash参数，反序列化成对象.
-this.$getHashs = function(url){
-	var hash;
-	if(url){
-		_temp_a_link.href = url;
-		hash = _temp_a_link.hash;
-	}else{
-		hash = location.hash;
-	}
-	return this.$unseralize(hash.replace(/^#/, ""));
-};
-
-this.$getHash = function(key){ return this.$getHashs()[key]; };
-
-//对象序列化
-this.$seralize = function(obj){
-	var res = [];
-	if(typeof obj !== obj){
-		return "";
-	}
-	for(var k in obj){
-		res.push(k+"="+obj[k]);
-	}
-	return res.join("&");
-};
-
-//字符串反序列化
-this.$unseralize = function(str){
-	var res = {};
-	if(!str){
-		return res;
-	}
-	var arr = str.split("&");
-	for(var i=0,l=arr.length;i<l;i++){
-		var item = arr[i];
-		var o = item.split("=");
-		res[o[0]] = decodeURIComponent(o[1]);
-	}
-	return res;
-};
-	
-//encodeHTML
-var __temp_dom = document.createElement("span");
-this.$encodeHTML = function(txt){
-	var t = document.createTextNode(txt),
-		res = __temp_dom.appendChild(t).parentNode.innerHTML;
-	__temp_dom.innerHTML = "";
-	return res;
-};
-
-//decodeHTML
-this.$decodeHTML = function(html){
-	__temp_dom.innerHTML = html;
-	return __temp_dom.innerText || __temp_dom.textContent;
-};
+/**
+ * 所有关于URL相关的操作函数
+ */
+this.$URL = function(){
+	//创建一个临时DOM，给后面的方法利用
+	var _temp_a_link = document.createElement("a");
+	return {
+		//取出search参数，反序列化成对象
+		getSearchs : function(url){
+			var search;
+			if(url){
+				_temp_a_link.href = url;
+				search = _temp_a_link.search;
+			}else{
+				search = location.search;
+			}
+			return $unseralize(search.replace(/^\?/, ""));
+		},
+		//获取单个的search参数
+		getSearch : function(key){
+			return this.getSearchs()[key];
+		},
+		//取出hash参数，反序列化成对象.
+		getHashs : function(url){
+			var hash;
+			if(url){
+				_temp_a_link.href = url;
+				hash = _temp_a_link.hash;
+			}else{
+				hash = location.hash;
+			}
+			return $unseralize(hash.replace(/^#/, ""));
+		},
+		//获取单个hash参数
+		getHash : function(key){
+			return this.getHashs()[key];
+		}
+	};
+}();
 
 //通用的获取当前时刻的毫秒数，兼容不支持Date.now()的旧浏览器
 this.$getTimer = function(){
