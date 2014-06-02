@@ -190,24 +190,46 @@ this.$HTML = function(){
 		/**
 		 * html模板引擎
 		 */
-		compile : function(str, data){
-			var compile = arguments.callee;
-			//如果参数str全部为组词字符，则表示传入的是DOM id.
+		compile : function(options){
+			//向前兼容（以前这样用：$HTML.compile("aDomId", {x:"XX", y:"YY"})）;
+			if(typeof options === "string"){
+				var o = {data : arguments[1], format : ["{%", "%}"]};
+				o[!/\w/.test(options) ? "str" : "id"] = options;
+				options = o;
+				o = null;
+			}
+			//参数必须是k-v格式，并且，id和str至少二选一
+			if(typeof options !== "object" || (!options.id && !options.str)){
+				return "params error.";
+			}
+
+			var compile = arguments.callee,
+				id= options.id,
+				str = options.str,
+				data = options.data,
+				format = options.format || ["<%", "%>"];
+
+			// 如果参数str全部为组词字符，则表示传入的是DOM id(注意：domid不能含有\W字符，比如中划线),
+			// 那么此时将这个id对应的模板缓存到函数体上。
 			var fn;
-			if(/^\w*$/.test(str)){
-				if(!compile[str]){
-					compile[str] = compile($id(str).innerHTML);
+			if(id){
+				if(!compile[id]){
+					compile[id] = compile({
+						str : $id(id).innerHTML,
+						format : format
+					});
 				}
-				fn = compile[str];
+				fn = compile[id];
 			}else{
+				var left = format[0], right = format[1];
 				fn = new Function("obj", "var p=[];with(obj){p.push('" +
 					str.replace(/[\r\t\n]/g, " ")
-						.split("{#").join("\t")
-						.replace(/((^|#\})[^\t]*)'/g, "$1\r")
-						.replace(/\t=(.*?)#\}/g, "',$1,'")
+						.split(left).join("\t")
+						.replace(new RegExp("((^|"+ right +")[^\\t]*)'", "g"), "$1\r")
+						.replace(new RegExp("\t=(.*?)"+right, "g"), "',$1,'")
 
 						.split("\t").join("');")
-						.split("#}").join("p.push('")
+						.split(right).join("p.push('")
 						.split("\r").join("\\'")+ "');}return p.join('');");
 			}
 			return data ? fn(data) : fn;
