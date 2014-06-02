@@ -107,15 +107,15 @@ this.$ns = function(str, fn){
 //title:时间格式化
 this.$dateFormat = function(date, fmt){
 	var _date_format = /(Y{2,4})|(M{1,2})|(D{1,2})|(h{1,2})|(m{1,2})|(s{1,2})/g;
-	fmt.replace(_date_format, function(self, Y, M, D, h, m, s){
+	return fmt.replace(_date_format, function(self, Y, M, D, h, m, s){
 		switch(true){
-			case !!Y : return date.getFullYear().toString().substr -Y.length;
-			case !!M : return ("0" + (date.getMonth() + 1)).substr -M.length;
-			case !!D : return ("0" + date.getDate()).substr -D.length;
-			case !!h : return ("0" + date.getHours()).substr -h.length;
-			case !!m : return ("0" + date.getMinutes()).substr -m.length;
-			case !!s : return ("0" + date.getSeconds()).substr -s.length;
-			default : return "";
+			case !!Y : return date.getFullYear().toString().substr(-Y.length);
+			case !!M : return ("0" + (date.getMonth() + 1)).substr(-M.length);
+			case !!D : return ("0" + date.getDate()).substr(-D.length);
+			case !!h : return ("0" + date.getHours()).substr(-h.length);
+			case !!m : return ("0" + date.getMinutes()).substr(-m.length);
+			case !!s : return ("0" + date.getSeconds()).substr(-s.length);
+			default : return this.toLocaleDateString();
 		}
 	});
 };
