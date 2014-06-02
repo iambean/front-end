@@ -74,7 +74,7 @@ window.JSON ||=
 			when !!h then ("0" + date.getHours()).substr -h.length
 			when !!m then ("0" + date.getMinutes()).substr -m.length
 			when !!s then ("0" + date.getSeconds()).substr -s.length
-			else ""
+			else @toLocaleDateString()
 
 ###在$dateFormat基础上的进一步产品化的封装，显示与客户端的相对时间，如“刚刚”，“一小时前”，“一天前”等###
 @$renderTimer = (timeObj)->
