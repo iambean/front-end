@@ -90,21 +90,47 @@ window.JSON ||=
 	][idx]
 
 #jq模板
-@$compiler = (str, data)->
-	compiler = arguments.callee
-	#如果参数str全部为组词字符
-#	console.log /^\w*$/.test(str), "xxx"
-	fn = if /^\w*$/.test(str)
-		compiler[str] ||= compiler(document.getElementById(str).innerHTML)
+@$compiler = (options)->
+	#向前兼容（以前这样用：$HTML.compile("aDomId", {x:"XX", y:"YY"})）;
+	if typeof options is "string"){
+		o = data : arguments[1], format : ["{%", "%}"]
+		key = if !/\w/.test(options) then "str" else "id"
+		o[key] = options
+		options = o
+		o = null
+	}
+	//参数必须是k-v格式，并且，id和str至少二选一
+	return "params error." if (typeof options isnt "object") or (options.id is undefined and options.str is undefined)
+
+	compile = arguments.callee
+	id= options.id
+	str = options.str
+	data = options.data
+	format = options.format || ["<%", "%>"]
+
+	# 如果参数str全部为组词字符，则表示传入的是DOM id(注意：domid不能含有\W字符，比如中划线),
+	# 那么此时将这个id对应的模板缓存到函数体上。
+	if id then
+		if compile[id] is undefined
+			compile[id] = compile({
+				str : $id(id).innerHTML
+				format : format
+			})
+		}
+		fn = compile[id]
 	else
-		new Function "obj", "var p=[];with(obj){p.push('" +
-					str.replace(/[\r\t\n]/g, " ")
-					.split("<#").join("\t")
-					.replace(/((^|#>)[^\t]*)'/g, "$1\r")
-					.replace(/\t=(.*?)#>/g, "',$1,'")
-					.split("\t").join("');")
-					.split("#>").join("p.push('")
-					.split("\r").join("\\'")+ "');}return p.join('');"
+		left = format[0]
+		right = format[1]
+		fn = new Function("obj", "var p=[];with(obj){p.push('" +
+			str.replace(/[\r\t\n]/g, " ")
+				.split(left).join("\t")
+				.replace(new RegExp("((^|"+ right +")[^\\t]*)'", "g"), "$1\r")
+				.replace(new RegExp("\t=(.*?)"+right, "g"), "',$1,'")
+
+				.split("\t").join("');")
+				.split(right).join("p.push('")
+				.split("\r").join("\\'")+ "');}return p.join('');")
+	}
 	if data then fn(data) else fn
 
 #获取浏览器版本号
