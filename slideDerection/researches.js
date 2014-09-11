@@ -35,7 +35,8 @@ function slideDirection(cfg) {
             dom.removeEventListener("touchmove", _move, true);
         }
         function _end(){
-            dom.removeEventListener("touchmove", _move, true);
+            dom.removeEventListener("touchend", _end, true);
+            dom.removeEventListener("touchcancel", _end, true);
         }
 
     }, true);
