@@ -1,7 +1,8 @@
 <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
 
+<h3>从项目中抽取出来的分页组件，这里只记录一下抽象方式，代码离实用性还有差距。</h3>
 
-<div id="wrapper">
+<div id="pageWrapper">
 	
 </div>
 
@@ -20,7 +21,7 @@ var currPage = 2,
 	totalPage = 12;
 
 var paginator = $paginater({
-	content : $("#wrapper").get(0),
+	content : $("#pageWrapper").get(0),
 	currPage : currPage,
 	totalPage : totalPage,
 	maxlength : 3,
