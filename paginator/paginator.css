@@ -1,0 +1,65 @@
+/*** page-turn ***/
+.page-turn {
+    text-align: center;
+    color: #847970;
+    font-family: simsun;
+}
+
+.page-turn a, .page-turn .prev-page-gray, .page-turn .next-page-gray, .page-turn .first-page-gray, .page-turn .last-page-gray {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    margin: 0 3px;
+    vertical-align: middle;
+    width: 27px;
+    height: 16px;
+    color: #847970;
+    background-color: #1d1311;
+    line-height: 17px;
+    border: 1px solid #3c332f;
+    letter-spacing: 1px;
+}
+
+.page-turn .prev-page-gray, .page-turn .next-page-gray, .page-turn .first-page-gray, .page-turn .last-page-gray {
+    color: #2e2624;
+    border-color: #2e2624;
+}
+
+.page-turn .first-page {
+    background-position: -44px -22px;
+}
+
+.page-turn .first-page-gray {
+    background-position: -63px -22px;
+}
+
+.page-turn .last-page {
+    background-position: -83px -22px;
+}
+
+.page-turn .last-page-gray {
+    background-position: -102px -22px;
+}
+
+.page-turn a:hover {
+    background-color: #342924;
+}
+
+.page-turn input {
+    background-color: #362a23;
+    box-shadow: inset 0 0 1px #2b211b;
+    border: 1px solid #6e5649;
+    width: 40px;
+    height: 16px;
+    line-height: 16px;
+    vertical-align: middle;
+    color: #e9ab73;
+    text-align: center;
+    margin: 0 4px 0 3px;
+}
+
+.page-turn .page-total {
+    vertical-align: middle;
+    margin-right: 4px;
+    letter-spacing: 0;
+}
