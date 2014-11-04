@@ -4,3 +4,49 @@
 <div id="wrapper">
 	
 </div>
+
+<script>
+/**
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+var currPage = 2,
+	totalPage = 12;
+
+var paginator = $paginater({
+		content : $("#wrapper").get(0),
+		currPage : currPage,
+		totalPage : totalPage,
+		maxlength : 3,
+		handle : function(key){
+			var curr = currPage,
+				total = totalPage,
+				targetPage = 0;
+			//参数如果是string，则有[first|prev|next|last]4个值，如果是数字，则表示要跳转到具体的页码
+			if(typeof key === "string"){
+				targetPage = {
+					"first" : 1,
+					"prev" 	: curr-1,
+					"next"  : curr+1,
+					"last"  : total
+				}[key];
+			}else{
+				targetPage = key*1;
+			}
+			//合法区间计算
+			targetPage = Math.max(1, Math.min(targetPage, total));
+			console.log("targetPage will be ",targetPage);
+			paginator.refresh({
+				curr : targetPage,
+				total : totalPage
+			});
+			currPage = targetPage;
+		}
+	});
+</script>
