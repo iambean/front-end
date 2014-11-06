@@ -1,2 +1,2 @@
 
----mobile html page only.
+mobile html page only.
