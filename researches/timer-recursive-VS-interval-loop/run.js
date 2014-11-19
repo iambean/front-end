@@ -2,11 +2,13 @@
 var fn = function(){sleep(500);},
   delay = 1000;
   
-setTimeou(function(){
+//1)setTimeout mode:
+setTimeout(function(){
   fn();
   setTimeout(arguments.callee, delay);
 }, delay);
 
+//1)setInterval mode:
 setInterval(fn, delay);
 
 
