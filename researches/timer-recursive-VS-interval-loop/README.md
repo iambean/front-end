@@ -2,7 +2,7 @@
 ##### Here is the following code, what is the diffrence betwin this 2 implementations?
 
 ```js
-var fn = function(){/\*some code\*/};
+var fn = function(){/*some code*/};
 
 // 1) :
 setTimeout(function(){
