@@ -1,7 +1,7 @@
 
-Here is the following code, what the diffrence betwin this 2 implementations?
+###Here is the following code, what the diffrence betwin this 2 implementations?
 
--code
+```js
 var fn = function(){/\*some code\*/};
 
 // 1) :
