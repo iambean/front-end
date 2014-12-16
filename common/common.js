@@ -19,7 +19,7 @@ if(!this.console){
 !this.JSON && (this.JSON = function(){
 	var otherType2String = function (data){
 		switch(data.constructor){
-			case String : return("\"" + data + "\"");
+			case String : return("\"" + escape(data) + "\"");
 			case Number : return data;
 			case Boolean: return data;
 			case Function: return "";//原生的stringify方法对Function却是直接忽略掉的。
@@ -34,7 +34,7 @@ if(!this.console){
 				for(var key in data){
 					if(data.hasOwnProperty(key)){
 						var value = data[key];
-						all.push("\"" + key + "\":" + otherType2String(value));
+						all.push("\"" + escape(key) + "\":" + otherType2String(value));
 					}
 				}
 				return "{" + all.join(",") + "}";
@@ -51,6 +51,11 @@ if(!this.console){
 			return otherType2String(json);
 		}
 	};
+	
+	 //对双引号和斜杠特殊字符转义
+    	function escape(s){
+        	return s.replace(/\\/g, "\\\\").replace(/"/g, "\\\"");
+    	}
 }());
 
 //找到数组中满足条件的第一项，找到就立即返回，不会继续往后找，这是跟jQuery.grep不同的地方。
