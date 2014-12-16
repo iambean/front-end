@@ -1,20 +1,19 @@
 
-var fn = function(){sleep(500);},
-  delay = 1000;
+var delay = 1000;
 
 var t0 = getTime();
   
 //1)setTimeout mode:
 setTimeout(function(){
   //console.log("Timeout:"， getTime() - t0);
-  fn();
+  sleep(500);
   setTimeout(arguments.callee, delay);
 }, delay);
 
-//1)setInterval mode:
+//2)setInterval mode:
 setInterval(function(){
   //console.log("Interval:", getTime() - t0);
-  fn();
+  sleep(500);
 }, delay);
 
 
@@ -24,4 +23,5 @@ function sleep(time){
   while(getTime() - t0 < time){ ; }
 }
 
+//get timestamp.
 function getTime(){ return Date.now ? Date.now() : +new Date(); }
