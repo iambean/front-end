@@ -14,9 +14,10 @@ window.JSON ||=
     #e.g: JSON.parse(JSON.stringify({b:"BBB", c:true, d:78, e:{e1:"AA", e2:45, e3:{"Xa":45, "Xb":[]}}, f : [23, true, 487, "daa", [1,2,4]]}))
 	"stringify" : (json) ->
 		throw new Error("JSON.stringify的参数必须是JSON格式") if typeof json isnt "object"
+		escape = (s)->s.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")
 		otherType2String = (data)->
 			switch data.constructor
-				when String then "\"" + data + "\""
+				when String then "\"" + escape(data) + "\""
 				when Number then data
 				when Boolean then data
 				when Array
@@ -27,7 +28,7 @@ window.JSON ||=
 				when Object # k-v json object:
 					all = []
 					for key, value of data
-						all.push ("\"" + key + "\":" + otherType2String value)
+						all.push ("\"" + escape(key) + "\":" + otherType2String value)
 					"{" + all.join(",") + "}"
 				else data.toString() #其他类型全部tostring，但是原生的stringify方法对Function却是直接忽略掉的。
 		otherType2String(json)
