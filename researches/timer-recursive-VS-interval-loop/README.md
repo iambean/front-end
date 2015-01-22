@@ -1,5 +1,5 @@
 
-##### Here is the following code, what is the diffrence betwin this 2 implementations?
+##### 下面这两种轮询的实现有什么差别？
 
 ```js
 var fn = function(){/*some code*/};
