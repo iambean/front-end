@@ -1,5 +1,5 @@
 
-### 下面这两种轮询的实现有什么差别？
+### setTimeout做轮询和setInterval的区别
 
 ```js
 var fn = function(){/*some code*/};
