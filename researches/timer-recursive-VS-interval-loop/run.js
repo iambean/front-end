@@ -1,19 +1,21 @@
 
+
 var delay = 1000;
+var sleepTime = 500;
 
 var t0 = getTime();
   
 //1)setTimeout mode:
-setTimeout(function(){
+void setTimeout(function(){
   console.log("1) timeout:", getTime() - t0);
-  sleep(500);
+  sleep(sleepTime);
   setTimeout(arguments.callee, delay);
 }, delay);
 
 //2)setInterval mode:
-setInterval(function(){
+void setInterval(function(){
   console.log("2) interval:", getTime() - t0);
-  sleep(500);
+  sleep(sleepTime);
 }, delay);
 
 
