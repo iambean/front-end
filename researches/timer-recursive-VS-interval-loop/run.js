@@ -5,14 +5,14 @@ var t0 = getTime();
   
 //1)setTimeout mode:
 setTimeout(function(){
-  //console.log("Timeout:"， getTime() - t0);
+  console.log("1) timeout:", getTime() - t0);
   sleep(500);
   setTimeout(arguments.callee, delay);
 }, delay);
 
 //2)setInterval mode:
 setInterval(function(){
-  //console.log("Interval:", getTime() - t0);
+  console.log("2) interval:", getTime() - t0);
   sleep(500);
 }, delay);
 
