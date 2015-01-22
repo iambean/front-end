@@ -1,5 +1,4 @@
 
-
 var delay = 1000;
 var sleepTime = 500;
 
