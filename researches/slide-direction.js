@@ -54,13 +54,7 @@ function slideDirection(cfg) {
 slideDirection({
     dom : document.querySelector("#wrapper"),
     crossover : 25,
-    callback : function(direct){
-        if(direct==="h"){
-            console.log("horizontal slide");
-            //...
-        }else if(direct==="v"){
-            console.log("vertical slide");
-            //...
-        }
+    callback : function(direction, degree){
+        console.log("finger slide direction is '" + direction + "', and the degree is " + degree);
     }
 });
