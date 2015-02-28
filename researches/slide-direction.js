@@ -3,7 +3,7 @@
  * @desc: 取起始点和第一次move的点坐标计算X轴夹角，
  *      1) 若是大于指定的临界值crossover(默认20°)则认为是垂直方向，否则是水平方向的。
  *      2) 这里只针对触摸设备的单指滑动操作。
- *      3) 给回调的两个参数：第一个flag表示[手指滑动的方向]，有left/right/bottom/top四个值;
+ *      3) 给回调的两个参数：第一个flag表示[手指滑动的方向]，有left/right/bottom/top四个值; 第二个是实际的角度
  */
 function slideDirection(cfg) {
     var dom = cfg.dom,//判断滑动方向的容器
