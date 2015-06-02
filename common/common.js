@@ -172,9 +172,12 @@ this.$HTML = function(){
 		/**
 		 * 将html代码转义成实体字符
 		 */
-		encode : function(txt){
+		encode : function(txt, replaceQuote){
 			var t = document.createTextNode(txt),
 				res = __temp_dom.appendChild(t).parentNode.innerHTML;
+			if(replaceQuote){
+				res = res.replace(/'/g, "&apos;").replace(/"/g, "&quot;");
+			}
 			__temp_dom.innerHTML = "";
 			return res;
 		},
