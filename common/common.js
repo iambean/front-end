@@ -34,7 +34,7 @@ if(!this.console){
 				for(var key in data){
 					if(data.hasOwnProperty(key)){
 						var value = data[key];
-						all.push("\"" + escape(key) + "\":" + otherType2String(value));
+						all.push("\"" + esc(key) + "\":" + otherType2String(value));
 					}
 				}
 				return "{" + all.join(",") + "}";
@@ -53,7 +53,7 @@ if(!this.console){
 	};
 	
 	 //对双引号和斜杠特殊字符转义
-    	function escape(s){
+    	function esc(s){
         	return s.replace(/\\/g, "\\\\").replace(/"/g, "\\\"");
     	}
 }());
