@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <style>
+        #outer{ height: 300px; border:1px dashed red;}
+        ul{list-style: none;padding:0;}
+        li{list-style: none;display: block;height:3em;padding:0.5em;background: #ABA;margin:2px;}
+
+        .scroll-bar-wrapper{ background: #AAA; }
+        .scroll-bar{background-color: #666; border-radius : 4px;}
+        .scroll-bar:hover{background-color: #777;}
+    </style>
+</head>
+<body>
+
+<div id="outer">
+    <div id="inner">
+        <ul>
+            <li>0</li>
+            <li>1</li><li>2</li><li>3</li><li>4</li><li>5</li>
+            <li>6</li><li>7</li><li>8</li><li>9</li><li>10</li>
+            <li>11</li><li>12</li><li>13</li><li>14</li><li>15</li>
+            <li>16</li><li>17</li><li>18</li><li>19</li><li>20</li>
+            <li>21</li><li>22</li><li>23</li><li>24</li><li>25</li>
+            <li>26</li><li>27</li><li>28</li><li>29</li><li>30</li>
+            <li>31</li><li>32</li><li>33</li><li>34</li><li>35</li>
+            <li>36</li><li>37</li><li>38</li><li>39</li><li>40</li>
+        </ul>
+    </div>
+</div>
+
+<script src="http://cdn.tgp.qq.com/lib/jq/jquery-1.11.1.min.js"></script>
+<script src="./Scroller.js"></script>
+<script>
+    var scroller = new Scroller($("#outer").get(0), {
+        direction : "y",
+        barClass : "scroll-bar",
+        barWrapperClass : "scroll-bar-wrapper",
+        wheelSize : 10, //滚轮一次滚动的距离
+        barMinSize : 20,//滚动条的最小高度（或宽度），优化体验，不允许无限小。
+        initShow : true
+    });
+
+    $(window).bind("dragstart selectstart contextmenu", function(e){
+        return false;
+    });
+</script>
+
+</body>
+</html>
