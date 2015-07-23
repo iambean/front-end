@@ -205,6 +205,19 @@ void function(){
                 barTop = scrollRate * this._wrapper_height - this._bar_height/2;
             //barTop = Math.max(0, Math.min(barTop, ));
             this.elements.bar.css("top", barTop);
+            return this;
+        },
+        /**
+         * 滚动到顶部
+         */
+         scrollToTop : function(){
+             return this.scrollTo(0);
+         },
+         /**
+         * 滚动到底部
+         */
+        scrollToTop : function(){
+            return this.scrollTo(this._wrapper_height - this._content_height);
         },
         /**
          * 刷新状态
@@ -227,6 +240,7 @@ void function(){
                 this._has_scroll = false;
                 eles.barWrapper.hide();
             }
+            return this;
         }
     };
 
