@@ -15,7 +15,6 @@
  *  scroller.scrollTo(-100);
  * ```
  */
-
 void function(){
     if(!window.jQuery){
         throw new Error("'Scroller' moodule deppended on jQuery.");
@@ -27,6 +26,8 @@ void function(){
      * @constructor
      */
     function Scroller(wrapper, options){
+
+        !options && (options = {});
         //需要把所有的属性全部列出来
         var _defaults = {
             //滚动条的基础类型，只需要支持在右边的y方向和在下面的x方向。默认y
@@ -36,9 +37,9 @@ void function(){
             //滚动条的classname
             barClass : "",
             //每次mousewheel滚动的像素（绝对值）
-            wheelSize : 10,
+            wheelSize : 50,
             //滚动条的最小高度（或宽度），优化体验，不允许无限小。
-            barMinSize : 10,
+            barMinSize : 20,
             //是否初始化显示
             initShow : true,
             //滚动到最顶部的时候
@@ -63,7 +64,7 @@ void function(){
         });
 
         //内容层。所有滚动区域的内容都追加在这content后面。
-        var content = wrapper.children();
+        var content = wrapper.children(":first");
         content.css({
             width : "100%",
             position : "absolute",
@@ -171,18 +172,22 @@ void function(){
          * 重置constructor
          */
         constructor : Scroller,
+
         /**
          * 所有相关html元素的集合
          */
         elements : null,
+
         /**
          * 是否需要滚动（只有在content高度大于外层wrapper时才需要滚动条）
          */
         _has_scroll : false,
+
         /**
          * 滚动偏移的位置。
          */
         _scroll_top : 0,
+
         /**
          * 将当前viewport滚动到指定位置, 需要计算一个不能越界的目标位置.
          * 向上滚动top值不能超过0；向下滚动top值不能超过(content.height-wrapper.height)
@@ -207,29 +212,34 @@ void function(){
             this.elements.bar.css("top", barTop);
             return this;
         },
+
         /**
-         * 滚动到顶部
-         */
-         scrollToTop : function(){
-             return this.scrollTo(0);
-         },
-         /**
-         * 滚动到底部
+         * 直接滚动到最顶部
          */
         scrollToTop : function(){
-            return this.scrollTo(this._wrapper_height - this._content_height);
+            this.scrollTo(0);
+            return this;
         },
         /**
-         * 刷新状态
+         * 直接滚动到最底部
          */
+        scrollToBottom : function(){
+            this.scrollTo(this._wrapper_height - this._contetn_height);
+            return this;
+        },
+
+        /**
+        * 刷新状态
+        */
         refresh : function(){
+            this.scrollTo(0);
             var eles = this.elements;
             var wrapperHeight = eles.wrapper.height(),
                 contetnHeight = eles.content.height();
+            //debug(contetnHeight , wrapperHeight)
             this._wrapper_height = wrapperHeight;
             this._contetn_height = contetnHeight;
             this._bar_offset_top = eles.barWrapper.offset().top;
-            console.log(contetnHeight , wrapperHeight)
             if(contetnHeight > wrapperHeight){
                 this._has_scroll = true;
                 eles.barWrapper.show();
