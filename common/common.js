@@ -19,7 +19,7 @@ if(!this.console){
 !this.JSON && (this.JSON = function(){
 	var otherType2String = function (data){
 		switch(data.constructor){
-			case String : return("\"" + escape(data) + "\"");
+			case String : return("\"" + esc(data) + "\"");
 			case Number : return data;
 			case Boolean: return data;
 			case Function: return "";//原生的stringify方法对Function却是直接忽略掉的。
@@ -111,16 +111,36 @@ this.$ns = function(str, fn){
 
 //title:时间格式化
 this.$dateFormat = function(date, fmt){
+	if(typeof date === "number"){
+		date = new Date(date);
+	}
+	var isValidDate = (date instanceof Date) && !isNaN(date.getYear());
+	if(!isValidDate){
+		return false;
+	}
 	var _date_format = /(Y{2,4})|(M{1,2})|(D{1,2})|(h{1,2})|(m{1,2})|(s{1,2})/g;
 	return fmt.replace(_date_format, function(self, Y, M, D, h, m, s){
+		var txt;
 		switch(true){
-			case !!Y : return date.getFullYear().toString().substr(-Y.length);
-			case !!M : return ("0" + (date.getMonth() + 1)).substr(-M.length);
-			case !!D : return ("0" + date.getDate()).substr(-D.length);
-			case !!h : return ("0" + date.getHours()).substr(-h.length);
-			case !!m : return ("0" + date.getMinutes()).substr(-m.length);
-			case !!s : return ("0" + date.getSeconds()).substr(-s.length);
-			default : return this.toLocaleDateString();
+			case !!Y :
+				txt = date.getFullYear().toString();
+				return txt.substr(txt.length - Y.length);
+			case !!M :
+				txt = "0" + (date.getMonth() + 1);
+				return txt.substr(txt.length - M.length);
+			case !!D :
+				txt = "0" + date.getDate();
+				return txt.substr(txt.length - D.length);
+			case !!h :
+				txt = "0" + date.getHours();
+				return txt.substr(txt.length - h.length);
+			case !!m :
+				txt = "0" + date.getMinutes();
+				return txt.substr(txt.length - m.length);
+			case !!s :
+				txt = "0" + date.getSeconds();
+				return txt.substr(txt.length - s.length);
+			default : return "";
 		}
 	});
 };
