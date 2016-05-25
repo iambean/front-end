@@ -22,7 +22,7 @@ let check = function(url, domains){
     //需要将domain里面的点号替换为正则参数的\\.
     let _domain = domain.replace(/\./g, "\\.");
     const reg = new RegExp(`^https?\\:\\/\/([\\w\-]+\\.)*${_domain}`, "i");
-    return reg.test(domain);
+    return reg.test(url);
   });
 };
 
