@@ -18,12 +18,14 @@ const reg = /^https?\:\/\/([\w\-]+\.)*qq\.com/i;
  * @return {Boolean} 检查结果是否匹配。
  */
 let check = function(url, domains){
-  return domains.some(function(domain, index){
+  let res = domains.some(function(domain, index){
     //需要将domain里面的点号替换为正则参数的\\.
     let _domain = domain.replace(/\./g, "\\.");
     const reg = new RegExp(`^https?\\:\\/\/([\\w\-]+\\.)*${_domain}`, "i");
     return reg.test(url);
   });
+  console.info(`"${url}" is ${res ? "matched" : "not matched"} ${domains}`);
+  return res;
 };
 
 //test:
